@@ -3,7 +3,7 @@
   "version": "1.0",
   "description": "Log in with your smartphone.",
   "icons": { "128": "icon.png" },
-  "background": { "scripts": ["lib/crypto-js/aes.js","lib/crypto-js/core-min.js","background.js"] },
+  "background": { "scripts": ["background.js"] },
   "content_scripts": [
     { 
       "matches": ["http://*/*", "https://*/*"], 
