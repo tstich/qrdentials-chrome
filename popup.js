@@ -3,6 +3,7 @@ var pollPolicy = null;
 var startTime = 0;
 var selectedTab = null;
 var keyWords = null;
+var pageType;
 
 function create_qrcode(text) {
 	var qr = qrcode(6, 'M'); // 864 Bits max, see http://blog.qr4.nl/page/QR-Code-Data-Capacity.aspx
@@ -18,11 +19,12 @@ function delete_cookie(next) {
 }
 
 function get_tab(next) {
-	chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+	chrome.tabs.query({currentWindow:true,active:true}, function(tabs) {
   		selectedTab = tabs[0];
   		next();
 	});
 }
+
 
 function Uint8ArrayToCryptoWords(srcArray) {
   var words = [];
@@ -50,25 +52,33 @@ function login(binaryResponse) {
 
   // Send credentials to content script
   var credentials = JSON.parse(decryptedText);
-  chrome.tabs.sendMessage(selectedTab.id, credentials, function() {});
+  var message = credentials;
+  message.type = pageType;
+  chrome.tabs.sendMessage(selectedTab.id, message, function() {});
 }
 
 function setup_popup(withSession) {
-	var urlParts = selectedTab.url.split('/');
-	var url = urlParts[0] + '//' + urlParts[2];
+	chrome.tabs.sendMessage(selectedTab.id, {type:'page_type'}, function(page_type) {
+		pageType = page_type;
+		var urlParts = selectedTab.url.split('/');
+		var url = urlParts[0] + '//' + urlParts[2];
 
-	if( withSession ) {
-	    chrome.cookies.get({url:baseURL,name:'JSESSIONID'}, function(cookie) {
-		    var sessionID = cookie.value;
-		    keyWords = randomKey();
-		    var qrMessage = url + '?s=' + sessionID + '&k=' + CryptoJS.enc.Hex.stringify(keyWords);
+		var qrMessage = url + '?t=' + page_type;
+
+		if( withSession ) {
+		    chrome.cookies.get({url:baseURL,name:'JSESSIONID'}, function(cookie) {
+			    var sessionID = cookie.value;
+			    keyWords = randomKey();
+			    qrMessage += '&s=' + sessionID + '&k=' + CryptoJS.enc.Hex.stringify(keyWords);
+			    //document.getElementById('qr').innerHTML = qrMessage;
+				document.getElementById('qr').innerHTML = create_qrcode(qrMessage);	
+		    });		
+		} else {
 			//document.getElementById('qr').innerHTML = qrMessage;
-			document.getElementById('qr').innerHTML = create_qrcode(qrMessage);
-	    });		
-	} else {
-		//document.getElementById('qr').innerHTML = 'QRData: ' + url + withSession;
-		document.getElementById('qr').innerHTML = create_qrcode(url);
-	}
+			document.getElementById('qr').innerHTML = create_qrcode(qrMessage);			
+		}
+
+	});	
 }
 
 function poll_command() {

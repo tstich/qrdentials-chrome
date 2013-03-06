@@ -1,6 +1,6 @@
 chrome.extension.onMessage.addListener(
   function(request, sender, sendResponse) {
-    if( sender.tab ) {
+    if( request.type == 'enablePageAction' ) {
       chrome.pageAction.show(sender.tab.id);
     }
 });

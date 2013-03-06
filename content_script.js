@@ -1,5 +1,5 @@
-var usernameField;
-var passwordField;
+var usernameField = null;
+var passwordFields = [];
 var frameHasLogin;
 
 function parentForm(element) {
@@ -10,38 +10,8 @@ function parentForm(element) {
 	return form;
 }
 
-function findLoginInDocument(doc) {
-	var inputFields = doc.getElementsByTagName('input');
-	var passwordIdx = -1;
-
-	for (var i =0; i < inputFields.length; i++) {
-		if( inputFields[i].getAttribute("type") == "password") {
-			passwordIdx = i;
-			passwordField = inputFields[i];
-			break;
-		}
-	}
-
-	if( passwordIdx > 0 ) {
-		for (var i = passwordIdx-1; i >= 0; i--) {
-			var type = inputFields[i].getAttribute("type");
-			if( type != "hidden" &&  type != "radio" ) {
-				usernameField = inputFields[i];
-				break;
-			}
-		}
-		return true;
-	} 
-	return false;
-}
-
-chrome.extension.onMessage.addListener(function(credentials, sender, response) 
-{
-	usernameField.value = credentials.username;
-	passwordField.value = credentials.password;
-
-	// Try to log in directly
-	var form = parentForm( passwordField );
+function triggerLogin(element) {
+	var form = parentForm();
 	if( form ) {
 		form.submit();		
 		return;
@@ -51,16 +21,74 @@ chrome.extension.onMessage.addListener(function(credentials, sender, response)
 	if( buttons.length == 1) {
 		buttons[0].click();
 		return
+	}	
+}
+
+function findLoginInDocument(doc) {
+	var inputFields = doc.getElementsByTagName('input');
+	var passwordIdx = -1;
+
+	for (var i =0; i < inputFields.length; i++) {
+		if( inputFields[i].getAttribute("type") == "password") {
+			passwordIdx = i;
+			passwordFields.push( inputFields[i] );
+		}
+	}
+
+	if( passwordFields.length == 1 ) {
+		for (var i = passwordIdx-1; i >= 0; i--) {
+			var type = inputFields[i].getAttribute("type");
+			if( type != "hidden" &&  type != "radio" ) {
+				usernameField = inputFields[i];
+				break;
+			}
+		}
+	} 
+}
+
+chrome.extension.onMessage.addListener(function(message, sender, response) 
+{
+	if( message.type == 'page_type' ) {
+		var type = 'n'; // Non-Login
+		if( passwordFields.length == 1 ) {
+			type = 'l'; // Login
+		}
+		if( passwordFields.length > 1 ) {
+			type = 'c'; // Change Password
+		}
+		response(type);
+	}
+
+	if( message.type == 'l' ) {
+		// Login
+		if( usernameField ) {
+			usernameField.value = message.username;
+		}
+		passwordFields[0].value = message.password;
+		
+		triggerLogin(passwordFields[0]);
+	}
+
+	if( message.type == 'c' ) {
+		// Change Password
+		passwordFields[0].value = message.old_password;
+		passwordFields[1].value = message.new_password;
+		if( passwordFields.length > 2 ) {
+			// Repeat New Password
+			passwordFields[2].value = message.new_password;
+		}
+
+		triggerLogin(passwordFields[0]);
 	}
 
 });
 
 
 // Search for login
-frameHasLogin = findLoginInDocument(document);
+findLoginInDocument(document);
 
-if( frameHasLogin ) {
-	//Signal Backend we have found a Login
-	chrome.extension.sendMessage({message:"loginFound"}, function() {});
+if( passwordFields.length > 0 ) {
+	//Signal Backend to enable the page action
+	chrome.extension.sendMessage({type:'enablePageAction'}, function() {});
 }
 
