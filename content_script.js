@@ -1,50 +1,21 @@
-var usernameField = null;
-var passwordFields = [];
-var frameHasLogin;
+// Search for login
+var passwordForm = $("form:has(:password:visible):first");
+var passwordFields;
+var usernameField;
 
-function parentForm(element) {
-	var form = element;
-	while(form && form.tagName != 'FORM') {
-		form = form.parentNode;
-	}
-	return form;
+if( passwordForm.length > 0 ) {
+  passwordFields = passwordForm.find(":password:visible");
+  passwordFields.css("background","red");
+  
+  if( passwordFields.length == 1 ) {
+   usernameField = passwordForm.find(":text:visible:first");
+   usernameField.css("background","green");
+  }
+
+  //Signal Backend to enable the page action
+  chrome.extension.sendMessage({type:'enablePageAction'}, function() {});
 }
 
-function triggerLogin(element) {
-	var form = parentForm();
-	if( form ) {
-		form.submit();		
-		return;
-	} 
-
-	var buttons = document.getElementsByTagName('button');
-	if( buttons.length == 1) {
-		buttons[0].click();
-		return
-	}	
-}
-
-function findLoginInDocument(doc) {
-	var inputFields = doc.getElementsByTagName('input');
-	var passwordIdx = -1;
-
-	for (var i =0; i < inputFields.length; i++) {
-		if( inputFields[i].getAttribute("type") == "password") {
-			passwordIdx = i;
-			passwordFields.push( inputFields[i] );
-		}
-	}
-
-	if( passwordFields.length == 1 ) {
-		for (var i = passwordIdx-1; i >= 0; i--) {
-			var type = inputFields[i].getAttribute("type");
-			if( type != "hidden" &&  type != "radio" ) {
-				usernameField = inputFields[i];
-				break;
-			}
-		}
-	} 
-}
 
 chrome.extension.onMessage.addListener(function(message, sender, response) 
 {
@@ -61,34 +32,21 @@ chrome.extension.onMessage.addListener(function(message, sender, response)
 
 	if( message.type == 'l' ) {
 		// Login
-		if( usernameField ) {
-			usernameField.value = message.username;
-		}
-		passwordFields[0].value = message.password;
-		
-		triggerLogin(passwordFields[0]);
+		usernameField.val( message.username );
+		passwordFields.val( message.password );
+
+		passwordForm.submit();
 	}
 
 	if( message.type == 'c' ) {
 		// Change Password
-		passwordFields[0].value = message.old_password;
-		passwordFields[1].value = message.new_password;
-		if( passwordFields.length > 2 ) {
-			// Repeat New Password
-			passwordFields[2].value = message.new_password;
-		}
+   		passwordInputs.eq(0).val(message.old_password);
+   		passwordInputs.slice(1,3).val(message.new_password);
 
-		triggerLogin(passwordFields[0]);
+		passwordForm.submit();
 	}
 
 });
 
 
-// Search for login
-findLoginInDocument(document);
-
-if( passwordFields.length > 0 ) {
-	//Signal Backend to enable the page action
-	chrome.extension.sendMessage({type:'enablePageAction'}, function() {});
-}
 
