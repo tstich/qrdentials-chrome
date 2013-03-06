@@ -1,0 +1,25 @@
+{
+  "name": "QRdentials",
+  "version": "1.0",
+  "description": "Log in with your smartphone.",
+  "icons": { "128": "icon.png" },
+  "background": { "scripts": ["lib/crypto-js/aes.js","lib/crypto-js/core-min.js","background.js"] },
+  "content_scripts": [
+    { 
+      "matches": ["http://*/*", "https://*/*"], 
+      "js": ["content_script.js"],
+      "all_frames": true
+    }
+  ],
+  "permissions": [
+    "tabs",
+    "cookies",
+    "http://api.qrdentials.com:8080/*"
+  ],
+  "page_action": {
+      "default_name": "Log in",
+      "default_icon": "icon.png",
+      "default_popup": "popup.html"
+  },
+  "manifest_version": 2
+}
