@@ -14,7 +14,7 @@
   "permissions": [
     "tabs",
     "cookies",
-    "http://api.qrdentials.com:8080/*"
+    "http://api.qrdentials.com/client/*"
   ],
   "page_action": {
       "default_name": "Log in",

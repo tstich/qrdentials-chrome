@@ -1,4 +1,4 @@
-var baseURL = 'http://api.qrdentials.com:8080/iDentityServlet/';
+var baseURL = 'http://api.qrdentials.com/client/';
 var pollPolicy = null;
 var startTime = 0;
 var selectedTab = null;
@@ -88,7 +88,7 @@ function poll_command() {
 	
 	if(msRemaining > 0) {
 		var pollCommand = new XMLHttpRequest();
-		pollCommand.open('GET', baseURL + 'poll.json', true);
+		pollCommand.open('GET', baseURL + 'poll', true);
 		pollCommand.responseType = 'arraybuffer';
 		pollCommand.onload = function(e) {
 			if( pollCommand.status == 200) {
@@ -110,7 +110,7 @@ function poll_command() {
 
 function new_command() {
 	var newCommand = new XMLHttpRequest();
-	newCommand.open('GET', baseURL + 'new.json?url=' + encodeURIComponent(selectedTab.url), true);
+	newCommand.open('GET', baseURL + 'new?url=' + encodeURIComponent(selectedTab.url), true);
 	newCommand.onreadystatechange =  function() {
 		if( newCommand.readyState == 4 ) {
 			// Got Response From Server
