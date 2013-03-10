@@ -1,0 +1,156 @@
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+	
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>Schwab Equity Award Center&#174;</title>
+    <link href="/eac/CSS/layout.css" type="text/css"  media="screen" rel="Stylesheet"  />
+    <link href="/eac/CSS/content.css" type="text/css"  media="screen" rel="Stylesheet" id="Content" title="s" />
+    <link href="/eac/CSS/content_m.css" type="text/css"  media="screen" rel="alternate stylesheet"  title="m" />
+    <link href="/eac/CSS/content_l.css" type="text/css"  media="screen" rel="alternate stylesheet" title="l" />
+
+    <script src="/eac/scripts/Common.js" language="javascript" type="text/javascript"></script>
+    <script src="/eac/scripts/CHAN_Login.js" language="javascript" type="text/javascript"></script>
+    <script src="/eac/scripts/SwitchFontSize.js" language="javascript" type="text/javascript"></script>
+    <script src="/eac/scripts/scat/SHA256.js" language="javascript" type="text/javascript"></script>
+    
+    <style type="text/css">
+	body { background-color: #F9F4E9; }
+	</style>
+    
+
+    <script type="text/javascript">
+        var INDU;
+        var QQQ;
+        var INX;
+        var SCH;
+        if (document.images)
+        {
+            var mainLink = "/eac/Images/marketChart";
+            var INDU = mainLink + "1.png";
+            var QQQ = mainLink + "2.png";
+            var INX = mainLink + "3.png";
+        }
+        function switchImg(newLink){
+            if (document.images) {
+                document.images['MktChart'].src = newLink;
+            }
+        }
+
+     	function setFocusOnLoginField() {
+        	if (document.signonForm) {
+              document.signonForm.SignonAccountNumber.focus();
+        	}
+			//deleteExistingSession(); // TODO
+     	}
+
+     	function loginSubmit() {
+
+     		
+	     		if ( document.signonForm.SignonAccountNumber.value.indexOf('@') == -1 ) {
+     				document.signonForm.action = "https://client.schwab.com/Login/SignOn/SignOn.ashx";     				
+     			}
+     		
+
+            setscatVariables();            
+            document.signonForm.target='_top';
+        	document.signonForm.submit();
+     	}
+    </script>   
+<script type="text/javascript">
+		
+		function setscatVariables() {	
+			
+		    	//var waUserId = SHA256(document.signonForm.SignonAccountNumber.value);		    		    			    	
+		          //var s=s_gi(scatAccounts[waEnvId]); s.tl(true,'o','LOGIN');	        
+		      }  
+</script>
+<!--OMNITURE CODE SITECATALYST (Universal)-->
+<!-- Copyright 1997 - 2008. Omniture, Inc. All Rights Reserved.  Omniture is a registered trademark of Omniture, Inc. in the United States, Canada, Japan, and the European Community. -->
+<script language="javascript">
+var waEnvId='PROD';
+var waPageName = "/SPS/EN/" + location.pathname;
+var waCategoryName = "prospects";
+var waUseDefaultPageName  = true;
+</script>
+<!--<script src='https://www.schwabcdn.com/system/asset?cmsid=EACC-TAG-HEADER'> </script>-->
+<script language="javascript1.1" src="https://www.schwab.com/system/file?cmsid=AUX-MD5"></script>
+</head>
+<body>
+<a name="Top" />
+<div>  
+
+    <form loginspec="form" namespace="" id="signonForm" name="signonForm" action="/eac/auth/login.do" method="post" autocomplete="off">
+    	<input type="hidden" name="esos" value="Y" id="esos"/>    	
+     	<input type="hidden" name="StartAnchor" value="OptionCenterXfer" id="StartAnchor"/>
+    	
+    		<input type="hidden" name="OCReferrer" value="https://eac.schwab.com/eac/start.do" id="OCReferrer"/>
+    	
+
+       <tr>
+		<td class="rightRailLogin" valign="top">
+			<table id="loginModule" cellpadding="0" cellspacing="0" border="0" width="100%">
+                  <tr>
+                      <td colspan="2" class="padTp5Rt0Bt5Lt5"><strong>Participant Login:</strong></td>
+                  </tr>
+                  <tr>
+                    <td align="center" colspan="2">
+                        <font color="#BB0000">
+                        <div class="actionmessages.nodot">
+                        
+                        </div>
+                        </font>
+                    </td>
+                  </tr>
+                  <tr>
+                      <td class="padLft5">Login ID</td>
+                      <td class="padLft5"><input loginspec="user" type="text" name="SignonAccountNumber" size="17" maxlength="256" value="" tabindex="1" id="SignonAccountNumber" style="vertical-align:middle;"/></td>
+                  </tr>
+                  <tr>
+                      <td class="padLft5 padTop3">Password</td>
+                      <td class="padLft5 padTop3"><input loginspec="password" type="password" name="SignOnPassword" size="17" maxlength="256" tabindex="2" id="SignOnPassword" style="vertical-align:middle;"/></td>
+                  </tr>
+
+                  <tr>
+                      <td colspan="2" class="padTp5Rt10Bt5Lt5">
+                          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+
+                              <tr>
+                                  <td valign="top" style="width:70%">
+                                      <a class="lnkSmallBlue" href="/eac/custsvc/forgotYourPassword1.do" target="_top">
+                                          Forgot your password?</a>
+                                  </td>
+                                  <td valign="middle"  style="width:30%" class="arightPadRt5">
+                                      <a loginspec="submit" class="button login" href="javascript: loginSubmit();" title="Login"><b>
+                                          Login</b></a>
+                                  </td>
+                              </tr>
+
+                              <tr>
+                                  <td valign="bottom"><a class="lnkSmallBlue" href="https://client.schwab.com/Login/CLWE/clwe.aspx?esos=y" target="_top">
+                                      Add Web access to your existing account.</a></td>
+                                  <td valign="bottom">&nbsp;</td>
+                              </tr>
+                          </table>
+                      </td>
+                  </tr>
+            </table>
+            <br/>
+		</td>
+	</tr>
+
+    </form>
+</div>
+<script language="Javascript">setFocusOnLoginField();</script>
+<script src="/eac/scripts/form_utils.js"></script>
+<script>registerFormForEnterKeyUseFunction(document.forms['signonForm'], loginSubmit);</script>
+<!--<script src='https://www.schwabcdn.com/system/asset?cmsid=EACC-TAG-FOOTER'></script>-->
+</body>
+</html>
