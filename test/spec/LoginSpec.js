@@ -24,7 +24,7 @@ describe("Parse Login Pages", function() {
     expect( loginForm.passwordForm.attr('loginspec')).toBe('form');
     expect( loginForm.passwordFields.attr('loginspec') ).toBe('password');
     expect( loginForm.usernameField.attr('loginspec') ).toBe('user');
-    expect( loginForm.submitButton.attr('loginspec') ).toBe('submit');
+    expect( loginForm.submitButton.prop('tagName') ).toBe('FORM');
   });
 
   it("DKB", function() {
@@ -48,6 +48,7 @@ describe("Parse Login Pages", function() {
     expect( loginForm.passwordForm.attr('loginspec')).toBe('form');
     expect( loginForm.passwordFields.attr('loginspec') ).toBe('password');
     expect( loginForm.usernameField.attr('loginspec') ).toBe('user');
+    expect( loginForm.submitButton.prop('tagName') ).toBe('FORM');
   });
 
 
@@ -60,7 +61,7 @@ describe("Parse Login Pages", function() {
     expect( loginForm.passwordForm.attr('loginspec')).toBe('form');
     expect( loginForm.passwordFields.attr('loginspec') ).toBe('password');
     expect( loginForm.usernameField.attr('loginspec') ).toBe('user');
-    expect( loginForm.submitButton.attr('loginspec') ).toBe('submit');
+    expect( loginForm.submitButton.prop('tagName') ).toBe('FORM');
   });
 
   it("NVIDIA Developer", function() {

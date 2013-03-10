@@ -29,7 +29,7 @@ chrome.extension.onMessage.addListener(function(message, sender, response)
 		loginForm.usernameField.val( message.username );
 		loginForm.passwordFields.val( message.password );
 
-		loginForm.passwordForm.submit();
+		loginForm.submit();
 	}
 
 	if( message.type == 'c' ) {
@@ -37,7 +37,7 @@ chrome.extension.onMessage.addListener(function(message, sender, response)
    		loginForm.passwordInputs.eq(0).val(message.old_password);
    		loginForm.passwordInputs.slice(1,3).val(message.new_password);
 
-		loginForm.passwordForm.submit();
+		loginForm.submit();
 	}
 
 });

@@ -21,11 +21,23 @@ function LoginForm() {
 
  		this.submitButton = this.passwordForm.find(":submit");
   		 if( this.submitButton.length == 0 ) {
-  		 	this.submitButton = this.passwordForm.find(":input").filter("[onclick]").last();
+  		 	this.submitButton = this.passwordForm.find(":input").not("[type=radio]").filter("[onclick]").last();
   		 }
-  		 if( this.submitButton.length == 0 ) {
-  		 	this.submitButton = this.passwordForm.find("a").filter("[href^=javascript]").last();
-  		 }
-	}
-}
+       if( this.submitButton.length == 0 ) {
+        this.submitButton = this.passwordForm;
+       }
+	 }
+  }
+
+  this.submit = function() {
+    if( this.submitButton.is("input")) {
+      this.submitButton.click();
+    }
+
+    if( this.submitButton.is("form") ) {
+      this.submitButton.submit();
+    } 
+
+  }
+
 }
